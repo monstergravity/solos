@@ -1,0 +1,43 @@
+{
+  "entities": {
+    "Startup": {
+      "title": "Startup",
+      "description": "Metadata about a startup",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "website": { "type": "string" },
+        "mrr": { "type": "number" },
+        "revenue": { "type": "number" },
+        "verifiedAt": { "type": "string", "format": "date-time" },
+        "founderId": { "type": "string" }
+      },
+      "required": ["name", "website", "mrr"]
+    },
+    "RevenueProof": {
+      "title": "Revenue Proof",
+      "description": "Verified revenue data from Stripe/RevenueCat",
+      "type": "object",
+      "properties": {
+        "startupId": { "type": "string" },
+        "provider": { "type": "string", "enum": ["stripe", "revenuecat"] },
+        "mrr": { "type": "number" },
+        "count": { "type": "number" },
+        "currency": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["startupId", "mrr", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/startups/{startupId}": {
+      "schema": "Startup",
+      "description": "Collection of all startups"
+    },
+    "/startups/{startupId}/proofs/{proofId}": {
+      "schema": "RevenueProof",
+      "description": "Historical verified proofs for a startup"
+    }
+  }
+}
